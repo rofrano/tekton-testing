@@ -5,6 +5,7 @@ metadata:
 spec:
   params:
   - name: project
+    default: tekton-ci-demo
     description: The github project url
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
