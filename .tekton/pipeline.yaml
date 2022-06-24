@@ -1,0 +1,81 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: builder
+spec:
+  params:
+    - name: project
+      default: tekton-demo
+  tasks:
+    - name: checkout
+      taskRef:
+        name: task-echo
+      params:
+      - name: message
+        value: git clone git@github.com:$(params.project)
+    - name: lint
+      taskRef:
+        name: list-files
+      runAfter:
+        - checkout
+    - name: tests
+      taskRef:
+        name: task-echo
+      params:
+      - name: message
+        value: Running unit tests here...
+      runAfter:
+        - lint
+    - name: deploy
+      taskRef:
+        name: task-echo
+      params:
+      - name: message
+        value: "Deploying $(params.project) to development environment"
+      runAfter:
+        - tests
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: list-files
+spec:
+  steps:
+    - name: ls
+      image: alpine:latest
+      command: [ls]
+      args: ["-l", "/"]
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sleep
+spec:
+  steps:
+    - name: sleep
+      image: alpine:latest
+      script: |
+        echo Starting to sleep...
+        sleep 5
+        echo Finished sleeping
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: task-echo
+spec:
+  params:
+  - name: message
+    type: string
+  steps:
+    - name: echo
+      image: alpine:latest
+      command: [echo]
+      args: ["$(params.message)"]
