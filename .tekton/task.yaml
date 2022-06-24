@@ -26,7 +26,7 @@ spec:
       type: string
   steps:
     - name: ls
-      image: alpine:latest
+      image: alpine
       command: [ls]
       args: ["$(params.folder)"]
 
@@ -38,7 +38,7 @@ metadata:
 spec:
   steps:
     - name: sleep
-      image: alpine:latest
+      image: alpine
       script: |
         echo Going to sleep...
         sleep 5
