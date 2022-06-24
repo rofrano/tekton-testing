@@ -3,10 +3,6 @@ kind: TriggerTemplate
 metadata:
   name: trigger-template
 spec:
-  params:
-  - name: project
-    default: tekton-ci-demo
-    description: The github project url
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
@@ -15,6 +11,3 @@ spec:
       spec:
         pipelineRef:
           name: ci-pipeline
-        params:
-        - name: project
-          value: $(tt.params.project)
