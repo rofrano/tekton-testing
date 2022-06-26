@@ -24,7 +24,7 @@ spec:
     - name: ls
       image: alpine:3
       command: [ls]
-      args: ["$(workspaces.source.path)"]
+      args: ["/"]
 
 ---
 apiVersion: tekton.dev/v1beta1
