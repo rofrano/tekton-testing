@@ -10,7 +10,7 @@ spec:
       type: string
   steps:
     - name: echo-message
-      image: alpine
+      image: alpine:3
       command: [echo]
       args: ["$(params.message)"]
 
@@ -26,7 +26,7 @@ spec:
       type: string
   steps:
     - name: ls
-      image: alpine
+      image: alpine:3
       command: [ls]
       args: ["$(params.folder)"]
 
@@ -38,7 +38,7 @@ metadata:
 spec:
   steps:
     - name: sleep
-      image: alpine
+      image: alpine:3
       script: |
         echo Going to sleep...
         sleep 5
