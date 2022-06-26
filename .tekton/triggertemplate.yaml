@@ -11,6 +11,3 @@ spec:
       spec:
         pipelineRef:
           name: ci-pipeline
-      params:
-      - name: project
-        value: ibm-devops/testing-tekton         
