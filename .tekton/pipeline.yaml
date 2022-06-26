@@ -4,13 +4,16 @@ kind: Pipeline
 metadata:
   name: ci-pipeline
 spec:
+  params:
+    - name: project
+      default: tekton-ci-demo
   tasks:
     - name: checkout
       taskRef:
         name: echo
       params:
       - name: message
-        value: git clone git@github.com:blah-blah-blah
+        value: git clone git@github.com:$(params.project)
     - name: lint
       taskRef:
         name: list-files
@@ -29,6 +32,6 @@ spec:
         name: echo
       params:
       - name: message
-        value: "Deploying NOTHING to development environment"
+        value: "Deploying $(params.project) to development environment"
       runAfter:
         - tests

@@ -20,15 +20,11 @@ kind: Task
 metadata:
   name: list-files
 spec:
-  params:
-    - name: folder
-      description: The folder to list
-      type: string
   steps:
     - name: ls
       image: alpine:3
       command: [ls]
-      args: ["$(params.folder)"]
+      args: ["$(workspaces.source.path)"]
 
 ---
 apiVersion: tekton.dev/v1beta1
