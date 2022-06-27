@@ -36,7 +36,8 @@ spec:
   - name: artifacts
   steps:
     - name: nosetests
-      image: ibmcom/pipeline-base-image
+      # image: ibmcom/pipeline-base-image
+      image: python:3.9-slim
       command: ["/bin/bash", "-c"]
       args:
         - |
