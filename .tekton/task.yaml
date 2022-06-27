@@ -6,8 +6,7 @@ metadata:
 spec:
   workspaces:
   - name: artifacts
-  inputs:
-    params:
+  params:
     - name: repository
       description: the git repository
     - name: branch
