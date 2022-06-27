@@ -26,8 +26,8 @@ spec:
 
     - name: lint
       workspaces:
-        - name: task-workspace
-          workspace: pipeline-workspace
+        - name: artifacts
+          workspace: pipeline-workspace          
       taskRef:
         name: linting
       runAfter:
