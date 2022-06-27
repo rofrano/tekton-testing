@@ -36,7 +36,6 @@ spec:
   - name: artifacts
   steps:
     - name: nosetests
-      # image: ibmcom/pipeline-base-image
       image: python:3.9-slim
       command: ["/bin/bash", "-c"]
       args:
@@ -44,11 +43,35 @@ spec:
           WS=$(workspaces.artifacts.path)/tekton-testing
           cd $WS
           pwd
-          ls -l
+          echo "****** INSTALL DEPENDENCIES *******"
           pip install -r requirements.txt
           echo "********** RUNNING TESTS **********"
           nosetests
+          echo "***********************************"
           ls $WS
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: linting
+spec:
+  workspaces:
+  - name: artifacts
+  steps:
+    - name: flake8
+      image: python:3.9-slim
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          WS=$(workspaces.artifacts.path)/tekton-testing
+          cd $WS
+          pwd
+          echo "****** INSTALL DEPENDENCIES *******"
+          pip install -r requirements.txt
+          echo "********** RUNNING TESTS **********"
+          make lint
+          echo "***********************************"
 
 ---
 apiVersion: tekton.dev/v1beta1

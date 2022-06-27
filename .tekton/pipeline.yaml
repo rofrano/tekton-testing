@@ -24,14 +24,14 @@ spec:
         - name: branch
           value: $(params.branch)
 
-    # - name: lint
-    #   workspaces:
-    #     - name: task-workspace
-    #       workspace: pipeline-workspace
-    #   taskRef:
-    #     name: list-files
-    #   runAfter:
-    #     - clone
+    - name: lint
+      workspaces:
+        - name: task-workspace
+          workspace: pipeline-workspace
+      taskRef:
+        name: linting
+      runAfter:
+        - clone
 
     - name: run-tests
       workspaces:
@@ -40,7 +40,7 @@ spec:
       taskRef:
         name: run-tests
       runAfter:
-        - clone
+        - lint
 
     # - name: deploy
     #   taskRef:
