@@ -44,7 +44,7 @@ spec:
           WS=$(workspaces.artifacts.path)
           cd $WS
           ls
-          pip3 install -r requirements.txt
+          pip install -r requirements.txt
           echo "********** RUNNING TESTS **********"
           nosetests
           ls $WS
