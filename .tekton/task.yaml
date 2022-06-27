@@ -41,9 +41,10 @@ spec:
       command: ["/bin/bash", "-c"]
       args:
         - |
-          WS=$(workspaces.artifacts.path)
+          WS=$(workspaces.artifacts.path)/tekton-testing
           cd $WS
-          ls
+          pwd
+          ls -l
           pip install -r requirements.txt
           echo "********** RUNNING TESTS **********"
           nosetests
