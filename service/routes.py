@@ -1,10 +1,9 @@
-from glob import glob
-import os
 from flask import jsonify, url_for, abort
 from service import app
 from service.utils import status
 
 COUNTER = {}
+
 
 ############################################################
 # Index page
@@ -13,11 +12,12 @@ COUNTER = {}
 def index():
     app.logger.info("Request for Base URL")
     return jsonify(
-        status=status.HTTP_200_OK, 
-        message="Hit Counter Service", 
+        status=status.HTTP_200_OK,
+        message="Hit Counter Service",
         version="1.0.0",
-        url=url_for("list_counters", _external=True)
+        url=url_for("list_counters", _external=True),
     )
+
 
 ############################################################
 # List counters
@@ -29,6 +29,7 @@ def list_counters():
     counters = [dict(name=count[0], counter=count[1]) for count in COUNTER.items()]
 
     return jsonify(counters)
+
 
 ############################################################
 # Create counters
@@ -43,8 +44,13 @@ def create_counters(name):
 
     COUNTER[name] = 0
 
-    location_url = url_for('read_counters', name=name, _external=True)
-    return jsonify(name=name, counter=0), status.HTTP_201_CREATED, {'Location': location_url}
+    location_url = url_for("read_counters", name=name, _external=True)
+    return (
+        jsonify(name=name, counter=0),
+        status.HTTP_201_CREATED,
+        {"Location": location_url},
+    )
+
 
 ############################################################
 # Read counters
@@ -58,6 +64,7 @@ def read_counters(name):
 
     counter = COUNTER[name]
     return jsonify(name=name, counter=counter)
+
 
 ############################################################
 # Update counters
@@ -74,6 +81,7 @@ def update_counters(name):
 
     counter = COUNTER[name]
     return jsonify(name=name, counter=counter)
+
 
 ############################################################
 # Delete counters
