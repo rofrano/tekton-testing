@@ -2,6 +2,56 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
+  name: clone-repo
+spec:
+  workspaces:
+  - name: artifacts
+  inputs:
+    params:
+    - name: repository
+      description: the git repository
+    - name: branch
+      description: the git branch
+      default: master
+  steps:
+    - name: clone
+      image: ibmcom/pipeline-base-image
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          WS=$(workspaces.artifacts.path)
+          REPOSITORY=$(inputs.params.repository)
+          BRANCH=$(inputs.params.branch)
+          cd $WS
+          git --version
+          git clone --single-branch --branch $BRANCH $REPOSITORY
+          ls $WS
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: run-tests
+spec:
+  workspaces:
+  - name: artifacts
+  steps:
+    - name: nosetests
+      image: ibmcom/pipeline-base-image
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          WS=$(workspaces.artifacts.path)
+          cd $WS
+          pip install -r requirements.txt
+          echo "********** RUNNING TESTS **********"
+          nosetests
+          ls $WS
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
   name: echo
 spec:
   params:
@@ -25,17 +75,3 @@ spec:
       image: alpine:3
       command: [ls]
       args: ["/"]
-
----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: sleep
-spec:
-  steps:
-    - name: sleep
-      image: alpine:3
-      script: |
-        echo Going to sleep...
-        sleep 5
-        echo Waking up!

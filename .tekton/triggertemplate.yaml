@@ -1,16 +1,28 @@
-apiVersion: triggers.tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
   name: trigger-template
 spec:
   resourcetemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: pipelinerun-$(uid)-pvc
+      spec:
+        resources:
+          requests:
+            storage:  1Gi
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteOnce
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        generateName: ci-pipeline-run-
+        name: pipelinerun-$(uid)
       spec:
         pipelineRef:
           name: ci-pipeline
-      params:
-      - name: project
-        value: ibm-devops/lab-tekton         
+        workspaces:
+          - name: pipeline-workspace
+            persistentVolumeClaim:
+              claimName: pipelinerun-$(uid)-pvc

@@ -4,34 +4,49 @@ kind: Pipeline
 metadata:
   name: ci-pipeline
 spec:
+  workspaces:
+  - name: pipeline-workspace
   params:
-    - name: project
-      default: tekton-ci-demo
+  - name: repository
+    default: https://github.com/rofrano/tekton-testing.git
+  - name: branch
+    default: master
   tasks:
-    - name: checkout
+    - name: clone
+      workspaces:
+        - name: artifacts
+          workspace: pipeline-workspace          
       taskRef:
-        name: echo
+        name: clone-repo
       params:
-      - name: message
-        value: git clone git@github.com:$(params.project)
-    - name: lint
+        - name: repository
+          value: $(params.repository)
+        - name: branch
+          value: $(params.branch)
+
+    # - name: lint
+    #   workspaces:
+    #     - name: task-workspace
+    #       workspace: pipeline-workspace
+    #   taskRef:
+    #     name: list-files
+    #   runAfter:
+    #     - clone
+
+    - name: run-tests
+      workspaces:
+        - name: artifacts
+          workspace: pipeline-workspace          
       taskRef:
-        name: list-files
+        name: run-tests
       runAfter:
-        - checkout
-    - name: tests
-      taskRef:
-        name: echo
-      params:
-      - name: message
-        value: Running unit tests here...
-      runAfter:
-        - lint
-    - name: deploy
-      taskRef:
-        name: echo
-      params:
-      - name: message
-        value: "Deploying $(params.project) to development environment"
-      runAfter:
-        - tests
+        - clone
+
+    # - name: deploy
+    #   taskRef:
+    #     name: echo
+    #   params:
+    #   - name: message
+    #     value: "Deploying $(params.project) to development environment"
+    #   runAfter:
+    #     - tests
