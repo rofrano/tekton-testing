@@ -1,0 +1,43 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: base-pipeline
+spec:
+  params:
+  - name: repository
+    default: https://github.com/rofrano/tekton-testing.git
+  tasks:
+    - name: clone
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Calling git clone $(params.repository)..."
+
+    - name: lint
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Calling PyLint and Flake8..."
+      runAfter:
+        - clone
+
+    - name: run-tests
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Running unit tests with PyUnit..."
+      runAfter:
+        - lint
+
+    - name: deploy
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Deploying $(params.repository) to development environment"
+      runAfter:
+        - tests
