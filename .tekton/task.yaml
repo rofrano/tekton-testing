@@ -44,7 +44,7 @@ spec:
           cd $WS
           pwd
           echo "****** INSTALL DEPENDENCIES *******"
-          pip install -r requirements.txt
+          pip install -qr requirements.txt
           echo "********** RUNNING TESTS **********"
           nosetests
           echo "***********************************"

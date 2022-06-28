@@ -1,0 +1,28 @@
+---
+# apiVersion: tekton.dev/v1beta1
+# kind: Pipeline
+# metadata:
+#   name: pipeline
+# spec:
+#   tasks:
+#     - name: clone
+#       taskRef:
+#         name: echo
+#       params:
+#       - name: message
+#         value: "The task has run!"
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  tasks:
+    - name: clone
+      params:
+      - name: message
+        value: "The task has run!"
+      steps:
+        - name: echo-message
+          image: alpine:3
+          command: [echo]
+          args: ["$(params.message)"]
