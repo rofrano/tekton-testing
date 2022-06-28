@@ -24,7 +24,7 @@ spec:
       runAfter:
         - clone
 
-    - name: run-tests
+    - name: tests
       taskRef:
         name: echo
       params:
