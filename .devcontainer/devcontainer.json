@@ -25,8 +25,8 @@
 		"redhat.vscode-yaml",
 		"streetsidesoftware.code-spell-checker",
 		"wholroyd.jinja",
-		"yzhang.markdown-all-in-one"		
+		"yzhang.markdown-all-in-one",
+		"redhat.vscode-tekton-pipelines"	
 	],
-	//"forwardPorts": [5000],
 	"postCreateCommand": "sudo pip install -r requirements.txt",
 }
