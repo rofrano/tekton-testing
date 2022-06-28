@@ -5,22 +5,30 @@ metadata:
   name: base-pipeline
 spec:
   params:
-  - name: repository
-    default: https://github.com/rofrano/tekton-testing.git
+    - name: repository
+      description: The git repository to process
+      default: https://github.com/rofrano/tekton-testing.git
+    - name: branch
+      description: The branch to clone
+      default: master
   tasks:
+    - name: print-env
+      taskRef:
+        name: environment
+
     - name: clone
       taskRef:
         name: echo
       params:
       - name: message
-        value: "Calling git clone $(params.repository)..."
+        value: "Cloning $(params.branch) from repository: $(params.repository)..."
 
     - name: lint
       taskRef:
         name: echo
       params:
       - name: message
-        value: "Calling PyLint and Flake8..."
+        value: "Calling Flake8 linter..."
       runAfter:
         - clone
 
@@ -38,6 +46,6 @@ spec:
         name: echo
       params:
       - name: message
-        value: "Deploying $(params.repository) to development environment"
+        value: "Deploying $(params.branch) branch of $(params.repository) ..."
       runAfter:
         - tests
