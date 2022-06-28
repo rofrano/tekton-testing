@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: git-trigger-binding
+spec:
+  params:
+    - name: repository
+      value: "$(event.repository.url)"
+    - name: branch
+      value: "$(event.ref)"
+    - name: revision
+      value: "$(event.head_commit.id)"      
+    - name: triggerName
+      value: "github-commit"
