@@ -16,6 +16,11 @@ kind: Pipeline
 metadata:
   name: pipeline
 spec:
+  params:
+  - name: repository
+    type: string
+    description: The git repository to clone
+    default: https://github.com/rofrano/tekton-testing.git
   tasks:
     - name: clone
       params:
@@ -25,4 +30,4 @@ spec:
         - name: echo-message
           image: alpine:3
           command: [echo]
-          args: ["$(params.message)"]
+          args: ["$(params.repository)"]
