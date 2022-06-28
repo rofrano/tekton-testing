@@ -1,33 +1,13 @@
 ---
-# apiVersion: tekton.dev/v1beta1
-# kind: Pipeline
-# metadata:
-#   name: pipeline
-# spec:
-#   tasks:
-#     - name: clone
-#       taskRef:
-#         name: echo
-#       params:
-#       - name: message
-#         value: "The task has run!"
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: pipeline
 spec:
-  params:
-  - name: repository
-    type: string
-    description: The git repository to clone
-    default: https://github.com/rofrano/tekton-testing.git
   tasks:
     - name: clone
+      taskRef:
+        name: echo
       params:
       - name: message
-        value: "The task has run!"
-      steps:
-        - name: echo-message
-          image: alpine:3
-          command: [echo]
-          args: ["$(params.repository)"]
+        value: "The empty pipeline clone task has run!"
