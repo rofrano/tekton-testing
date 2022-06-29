@@ -4,4 +4,7 @@ metadata:
   name: event-listener
 spec:
   triggers:
-    - triggerRef: trigger
+    - binding:
+        name: trigger-binding
+      template:
+        name: trigger-template
