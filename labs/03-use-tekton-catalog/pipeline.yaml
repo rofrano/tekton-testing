@@ -29,11 +29,14 @@ spec:
         value: $(params.revision)
 
     - name: lint
+      workspaces:
+        - name: output
+          workspace: pipeline-workspace          
       taskRef:
-        name: echo
+        name: list-files
       params:
-      - name: message
-        value: "Calling Flake8 linter..."
+      - name: folder
+        value: "/workspace/output"
       runAfter:
         - clone
 
