@@ -10,17 +10,11 @@ spec:
     - name: branch
       description: the branch for the git repo
       default: "master"
-    - name: revision
-      description: the commit id/sha for the clone action
-      default: " "
-    - name: triggerName
-      default: "git-commit-process"
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
         name: pipelinerun-$(uid)
-        # name: $(params.triggerName)-$(uid)
       spec:
         pipelineRef:
           name: cd-pipeline
@@ -29,5 +23,3 @@ spec:
             value: $(params.repository)
           - name: branch
             value: $(params.branch)
-          - name: revision
-            value: $(params.revision)

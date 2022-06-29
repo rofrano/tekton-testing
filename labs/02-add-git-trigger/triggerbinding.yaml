@@ -8,7 +8,3 @@ spec:
       value: "$(event.repository.url)"
     - name: branch
       value: "$(event.ref)"
-    - name: revision
-      value: "$(event.head_commit.id)"      
-    - name: triggerName
-      value: "github-commit"
