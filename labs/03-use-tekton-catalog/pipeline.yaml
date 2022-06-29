@@ -1,0 +1,56 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: cd-pipeline
+spec:
+  workspaces:
+    - name: pipeline-workspace
+  params:
+    - name: repository
+      description: The git repository to process
+    - name: branch
+      description: The branch to clone
+    - name: revision
+      description: The commit ref
+  tasks:
+    - name: clone
+      workspaces:
+        - name: output
+          workspace: pipeline-workspace          
+      taskRef:
+        name: git-clone
+      params:
+      - name: url
+        value: $(params.repository)
+      - name: refspec
+        value: $(params.branch)
+      - name: revision
+        value: $(params.revision)
+
+    - name: lint
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Calling Flake8 linter..."
+      runAfter:
+        - clone
+
+    - name: tests
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Running unit tests with PyUnit..."
+      runAfter:
+        - lint
+
+    - name: deploy
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Deploying $(params.branch) branch of $(params.repository) ..."
+      runAfter:
+        - tests
