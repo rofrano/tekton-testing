@@ -12,10 +12,6 @@ spec:
       description: The branch to clone
       default: master
   tasks:
-    - name: print-env
-      taskRef:
-        name: environment
-
     - name: clone
       taskRef:
         name: echo

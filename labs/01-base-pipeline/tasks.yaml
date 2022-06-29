@@ -12,33 +12,3 @@ spec:
       image: alpine:3
       command: [echo]
       args: ["$(params.message)"]
-
----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: list-files
-spec:
-  params:
-    - name: folder
-      description: The folder to list
-      type: string
-  steps:
-    - name: pwd
-      image: alpine:3
-      command: [pwd]
-    - name: ls
-      image: alpine:3
-      command: [ls]
-      args: ["$(params.folder)"]
-
----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: environment
-spec:
-  steps:
-    - name: env
-      image: alpine:3
-      command: [env]
