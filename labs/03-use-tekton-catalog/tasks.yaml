@@ -21,6 +21,8 @@ kind: Task
 metadata:
   name: list-files
 spec:
+  workspaces:
+    - name: output
   params:
     - name: folder
       description: The folder to list
