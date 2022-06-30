@@ -35,6 +35,13 @@ spec:
       volumeMounts:
       - name: properties
         mountPath: "/workspace/properties"
+    - name: cat
+      image: alpine:3
+      command: [cat]
+      args: ["$(params.folder)/apikey"]
+      volumeMounts:
+      - name: properties
+        mountPath: "/workspace/properties"
   volumes:
   - name: properties
     projected:
