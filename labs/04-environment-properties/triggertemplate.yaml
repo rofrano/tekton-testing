@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
-  name: git-trigger-template
+  name: trigger-template
 spec:
   resourcetemplates:
     - apiVersion: v1
