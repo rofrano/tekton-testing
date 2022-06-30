@@ -4,6 +4,9 @@ kind: Pipeline
 metadata:
   name: pipeline
 spec:
+  params:
+    - name: apikey
+      description: The api key provided by customer
   workspaces:
     - name: pipeline-workspace
   tasks:
@@ -13,6 +16,12 @@ spec:
           workspace: pipeline-workspace          
       taskRef:
         name: environment
+    - name: echo
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "The API Key is: $(params.apikey)"
     - name: properties
       workspaces:
         - name: output

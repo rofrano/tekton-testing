@@ -26,3 +26,6 @@ spec:
           - name: pipeline-workspace
             persistentVolumeClaim:
               claimName: pipelinerun-$(uid)-pvc
+        params:
+          - name: apikey
+            value: $(params.apikey)
