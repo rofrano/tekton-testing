@@ -7,16 +7,12 @@ spec:
   workspaces:
     - name: pipeline-workspace
   tasks:
-    - name: lint
+    - name: env
       workspaces:
         - name: output
           workspace: pipeline-workspace          
       taskRef:
-        name: list-files
-      params:
-      - name: folder
-        value: "/workspace/output"
-
+        name: environment
     - name: properties
       workspaces:
         - name: output

@@ -49,3 +49,19 @@ spec:
       - configMap:
           name: default-properties
           optional: true
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: environment
+spec:
+  steps:
+    - name: env
+      image: alpine:3
+      command: [env]
+      env:
+        - name: API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: default-properties
+              key: apikey
