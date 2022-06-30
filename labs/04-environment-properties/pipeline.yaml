@@ -1,0 +1,28 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  workspaces:
+    - name: pipeline-workspace
+  tasks:
+    - name: lint
+      workspaces:
+        - name: output
+          workspace: pipeline-workspace          
+      taskRef:
+        name: list-files
+      params:
+      - name: folder
+        value: "/workspace/output"
+
+    - name: properties
+      workspaces:
+        - name: properties
+          workspace: pipeline-workspace          
+      taskRef:
+        name: list-files
+      params:
+      - name: folder
+        value: "/workspace/properties"
