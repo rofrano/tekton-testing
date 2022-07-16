@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:  
+  name: message-pipeline
+spec:
+  params:
+    - name: message
+  tasks:
+    - name: talk
+      taskRef:
+        name: echo
+      params:
+        - name: message
+          value: "$(params.message)"
