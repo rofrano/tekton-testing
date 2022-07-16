@@ -183,15 +183,15 @@ Apply it to the cluster:
 kubectl apply -f tasks.yaml
 ```
 
-### Create the ci-pipeline pipeline
+### Create the cd-pipeline pipeline
 
-Finally we will create a Pipeline called `ci-pipeline` to be the starting point of our Continuous Integration pipeline.
+Finally we will create a Pipeline called `cd-pipeline` to be the starting point of our Continuous Integration pipeline.
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:  
-  name: ci-pipeline
+  name: cd-pipeline
 spec:
   params:
     - name: repo-url
@@ -214,12 +214,12 @@ Apply it to the cluster:
 kubectl apply -f pipeline.yaml
 ```
 
-### Run the ci-pipeline
+### Run the cd-pipeline
 
 Run the pipeline using the Tekton CLI:
 
 ```bash
-tkn pipeline start ci-pipeline \
+tkn pipeline start cd-pipeline \
     --showlog \
     -p repo-url="https://github.com/rofrano/tekton-testing.git" \
     -p branch="master"
@@ -228,9 +228,102 @@ tkn pipeline start ci-pipeline \
 The output should look like this:
 
 ```bash
-PipelineRun started: ci-pipeline-run-2ps4l
+PipelineRun started: cd-pipeline-run-2ps4l
 Waiting for logs to be available...
 [clone : checkout] Cloning into 'tekton-testing'...
 ```
+
+## Step 4
+
+In this final step we will fill out the rest of the pipeline with calls to the `echo` task to simple echo a message for now. We will replace these "placeholder" tasks with real ones in future labs.
+
+### Fill out the cd-pipeline with placeholders
+
+Now we will add four tasks to the pipeline to `lint`, `unit-test`, `build`, and `deploy`. All of these pipeline tasks will reference the `echo` task for now.
+
+Update the `pipeline.yaml` file to include these placeholder tasks.
+
+```yaml
+    - name: lint
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Calling Flake8 linter..."
+      runAfter:
+        - clone
+
+    - name: tests
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Running unit tests with PyUnit..."
+      runAfter:
+        - lint
+
+    - name: build
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Building image for $(params.repo-url) ..."
+      runAfter:
+        - tests
+
+    - name: deploy
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Deploying $(params.branch) branch of $(params.repo-url) ..."
+      runAfter:
+        - build
+```
+
+You now have a base pipeline to build the rest of your tasks into.
+
+Apply it to the cluster:
+
+```bash
+kubectl apply -f pipeline.yaml
+```
+
+### Run the cd-pipeline
+
+Run the pipeline using the Tekton CLI:
+
+```bash
+tkn pipeline start cd-pipeline \
+    --showlog \
+    -p repo-url="https://github.com/rofrano/tekton-testing.git" \
+    -p branch="master"
+```
+
+The output should look like this:
+
+```bash
+PipelineRun started: cd-pipeline-run-2ps4l
+Waiting for logs to be available...
+[clone : checkout] Cloning into 'tekton-testing'...
+```
+
+Out should see output like this:
+
+```bash
+Pipelinerun started: cd-pipeline-run-k6925
+Waiting for logs to be available...
+[clone : checkout] Cloning into 'tekton-testing'...
+
+[lint : echo-message] Calling Flake8 linter...
+
+[tests : echo-message] Running unit tests with PyUnit...
+
+[build : echo-message] Building image for https://github.com/rofrano/tekton-testing.git ...
+
+[deploy : echo-message] Deploying master branch of https://github.com/rofrano/tekton-testing.git ...
+```
+
+## Complete
 
 This completes the lab on creating a basic pipeline
