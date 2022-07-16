@@ -141,9 +141,17 @@ tkn pipeline start message-pipeline \
     -p message="Tekton ROCKS!"
 ```
 
+You should see the output:
+
+```bash
+PipelineRun started: message-pipeline-run-r48dk
+Waiting for logs to be available...
+[talk : echo-message] Tekton ROCKS!
+```
+
 ## Step 3
 
-In this step we will take our knowledge of running a command in a container with our knowledge of passing parameters and make a task that checksour code from GitHub.
+In this step we will take our knowledge of running a command in a container with our knowledge of passing parameters and make a task that checks out our code from GitHub.
 
 ### Create checkout task
 
