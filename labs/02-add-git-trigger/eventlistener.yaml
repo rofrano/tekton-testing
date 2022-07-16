@@ -1,10 +1,11 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: git-event-listener
+  name: cd-listener
 spec:
+  serviceAccountName: tekton-triggers-sa
   triggers:
-    - binding:
-        name: git-trigger-binding
+    - bindings:
+      - ref: cd-binding
       template:
-        name: git-trigger-template
+        ref: cd-template

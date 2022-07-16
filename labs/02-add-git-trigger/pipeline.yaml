@@ -1,21 +1,21 @@
----
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
-metadata:
+metadata:  
   name: cd-pipeline
 spec:
   params:
-    - name: repository
-      description: The git repository to process
+    - name: repo-url
     - name: branch
-      description: The branch to clone
+      default: "master"
   tasks:
     - name: clone
       taskRef:
-        name: echo
+        name: checkout
       params:
-      - name: message
-        value: "Cloning from $(params.branch) branch of repository: $(params.repository)..."
+      - name: repo-url
+        value: "$(params.repo-url)"
+      - name: branch
+        value: "$(params.branch)"
 
     - name: lint
       taskRef:
@@ -35,11 +35,20 @@ spec:
       runAfter:
         - lint
 
+    - name: build
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Building image for $(params.repo-url) ..."
+      runAfter:
+        - tests
+
     - name: deploy
       taskRef:
         name: echo
       params:
       - name: message
-        value: "Deploying $(params.branch) branch of $(params.repository) ..."
+        value: "Deploying $(params.branch) branch of $(params.repo-url) ..."
       runAfter:
-        - tests
+        - build

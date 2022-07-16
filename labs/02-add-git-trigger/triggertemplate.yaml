@@ -1,7 +1,7 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: git-trigger-template
+  name: cd-template
 spec:
   params:
     - name: repository
@@ -9,17 +9,18 @@ spec:
       default: " "
     - name: branch
       description: the branch for the git repo
-      default: "master"
+      default: master
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        name: pipelinerun-$(uid)
+        generateName: cd-pipeline-run-
       spec:
+        serviceAccountName: tekton-triggers-sa
         pipelineRef:
           name: cd-pipeline
         params:
-          - name: repository
-            value: $(params.repository)
+          - name: repo-url
+            value: $(tt.params.repository)
           - name: branch
-            value: $(params.branch)
+            value: $(tt.params.branch)
