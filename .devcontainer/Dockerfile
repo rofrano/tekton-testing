@@ -7,6 +7,10 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     apt-get clean -y
 
+# Install K3D, IBM Cloud CLI for Kubernetes
+RUN curl -s "https://raw.githubusercontent.com/rancher/k3d/main/install.sh" | bash && \
+    curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+
 # Install Tekton CLI
 RUN apt update;sudo apt install -y gnupg && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3EFE0E0A2F2F60AA && \
@@ -37,3 +41,6 @@ EXPOSE 5000
 
 # Become a regular user for development
 USER $USERNAME
+
+# Install IBM Cloud Kubernetes plugin
+RUN ibmcloud plugin install container-service -r 'IBM Cloud'

@@ -5,28 +5,39 @@
 	"remoteUser": "devops",
 	"workspaceFolder": "/app",
     "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=delegated",
-    "runArgs": ["-h","nyu"],
+    "runArgs": ["-h","tekton"],
     "remoteEnv": {
       "FLASK_ENV": "development"
     },
 	"extensions": [
 		"VisualStudioExptTeam.vscodeintellicode",
+		"ms-python.python",
+        "ms-python.pylint",
+		"ms-python.vscode-pylance",
 		"alexkrechik.cucumberautocomplete",
+		"yzhang.markdown-all-in-one",
 		"bierner.github-markdown-preview",
-		"cstrap.flask-snippets",
+		"hnw.vscode-auto-open-markdown-preview",
 		"DavidAnson.vscode-markdownlint",
 		"donjayamanne.githistory",
 		"GitHub.vscode-pull-request-github",
+		"LittleFoxTeam.vscode-python-test-adapter",
 		"hbenl.vscode-test-explorer",
-		"hnw.vscode-auto-open-markdown-preview",
-		"ms-python.python",
-		"ms-python.vscode-pylance",
 		"njpwerner.autodocstring",
 		"redhat.vscode-yaml",
 		"streetsidesoftware.code-spell-checker",
 		"wholroyd.jinja",
-		"yzhang.markdown-all-in-one",
+		"ms-azuretools.vscode-docker",
+		"inercia.vscode-k3d",
 		"redhat.vscode-tekton-pipelines"	
 	],
 	"postCreateCommand": "sudo pip install -r requirements.txt",
+	"features": {
+		"docker-in-docker": "latest",
+		"kubectl-helm-minikube": {
+			"version": "latest",
+			"helm": "latest",
+			"minikube": "none"
+		}
+	}
 }
