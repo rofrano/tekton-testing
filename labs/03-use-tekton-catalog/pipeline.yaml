@@ -1,18 +1,14 @@
----
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
-metadata:
+metadata:  
   name: cd-pipeline
 spec:
   workspaces:
     - name: pipeline-workspace
   params:
-    - name: repository
-      description: The git repository to process
+    - name: repo-url
     - name: branch
-      description: The branch to clone
-    - name: revision
-      description: The commit ref
+      default: master
   tasks:
     - name: clone
       workspaces:
@@ -22,21 +18,16 @@ spec:
         name: git-clone
       params:
       - name: url
-        value: $(params.repository)
-      - name: refspec
-        value: $(params.branch)
+        value: $(params.repo-url)
       - name: revision
-        value: $(params.revision)
+        value: $(params.branch)
 
     - name: lint
-      workspaces:
-        - name: output
-          workspace: pipeline-workspace          
       taskRef:
-        name: list-files
+        name: echo
       params:
-      - name: folder
-        value: "/workspace/output"
+      - name: message
+        value: "Calling Flake8 linter..."
       runAfter:
         - clone
 
@@ -49,11 +40,20 @@ spec:
       runAfter:
         - lint
 
+    - name: build
+      taskRef:
+        name: echo
+      params:
+      - name: message
+        value: "Building image for $(params.repo-url) ..."
+      runAfter:
+        - tests
+
     - name: deploy
       taskRef:
         name: echo
       params:
       - name: message
-        value: "Deploying $(params.branch) branch of $(params.repository) ..."
+        value: "Deploying $(params.branch) branch of $(params.repo-url) ..."
       runAfter:
-        - tests
+        - build

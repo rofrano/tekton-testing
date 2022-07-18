@@ -1,6 +1,3 @@
-# Need to add https://github.com/tektoncd/catalog.git to Toolchain
-# Also add task/git-clone/0.7 to Pipeline
----
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -13,25 +10,5 @@ spec:
   steps:
     - name: echo-message
       image: alpine:3
-      command: [echo]
+      command: [/bin/echo]
       args: ["$(params.message)"]
----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: list-files
-spec:
-  workspaces:
-    - name: output
-  params:
-    - name: folder
-      description: The folder to list
-      type: string
-  steps:
-    - name: pwd
-      image: alpine:3
-      command: [pwd]
-    - name: ls
-      image: alpine:3
-      command: [ls]
-      args: ["$(params.folder)"]
