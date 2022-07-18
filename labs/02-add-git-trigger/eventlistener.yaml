@@ -3,7 +3,7 @@ kind: EventListener
 metadata:
   name: cd-listener
 spec:
-  serviceAccountName: tekton-triggers-sa
+  serviceAccountName: pipeline
   triggers:
     - bindings:
       - ref: cd-binding

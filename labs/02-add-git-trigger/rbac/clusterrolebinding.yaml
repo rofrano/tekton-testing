@@ -4,7 +4,7 @@ metadata:
   name: tekton-triggers-clusterbinding
 subjects:
 - kind: ServiceAccount
-  name: tekton-triggers-sa
+  name: pipeline
   namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io

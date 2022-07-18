@@ -15,7 +15,7 @@ kubectl apply -f pipeline.yaml
 
 You will also need a ServiceAccount with the correct Role Based Access Control (RBAC) privileges which we have supplied in the `./rbac` folder. The setting up of a ServiceAccount and Role Base Access Control is beyond he scope of this lab, but these files are generic enough to use on your personal projects.
 
-The ServiceAccount name to use for this lab is: `tekton-triggers-sa`.
+The ServiceAccount name to use for this lab is: `pipeline`.
 
 Apply the RBAC rules now with:
 
@@ -37,7 +37,7 @@ kind: EventListener
 metadata:
   name: cd-listener
 spec:
-  serviceAccountName: tekton-triggers-sa
+  serviceAccountName: pipeline
   triggers:
     - bindings:
       - ref: cd-binding
@@ -49,6 +49,15 @@ Apply it to the cluster:
 
 ```bash
 kubectl apply -f eventlistener.yaml
+```
+
+Check that it was created correctly.
+
+```bash
+$ tkn eventlistener ls
+
+NAME          AGE             URL                                                    AVAILABLE
+cd-listener   9 seconds ago   http://el-cd-listener.default.svc.cluster.local:8080   True
 ```
 
 We will create the TriggerBinding named `cd-binding` and a TriggerTemplate named `cd-template` in the following steps:
@@ -111,7 +120,7 @@ spec:
       metadata:
         generateName: cd-pipeline-run-
       spec:
-        serviceAccountName: tekton-triggers-sa
+        serviceAccountName: pipeline
         pipelineRef:
           name: cd-pipeline
         params:
@@ -136,7 +145,7 @@ Now it's time to call the event listener and have it start a PipelineRun. We can
 Forward the port for the event listener so that can call it on `localhost`.
 
 ```bash
-kubectl port-forward service/el-cd-listener  8090:8080 
+kubectl port-forward service/el-cd-listener  8090:8080
 ```
 
 Use the `curl` command to send a payload to out event listener service.
@@ -150,21 +159,21 @@ curl -X POST http://localhost:8090 \
 This should start a PipelineRun. You can check on the status with this command:
 
 ```bash
-$ tkn pipelinerun ls
-NAME                    STARTED         DURATION     STATUS               
-cd-pipeline-run-4ktpk   2 minutes ago   19 seconds   Succeeded 
+$ $ tkn pipelinerun ls
+NAME                    STARTED          DURATION   STATUS
+cd-pipeline-run-hhkpm   10 seconds ago   ---        Running
 ```
 
 You can also examine the PipelineRun logs using this command (the `-L` mean "latest" so that you don't have to look up the name for the last run):
 
 ```bash
-tkn pipelinerun logs -L
+tkn pipelinerun logs --last
 ```
 
 You should see:
 
 ```bash
-$ tkn pipelinerun logs -L
+$ tkn pipelinerun logs --last
 [clone : checkout] Cloning into 'tekton-testing'...
 
 [lint : echo-message] Calling Flake8 linter...
