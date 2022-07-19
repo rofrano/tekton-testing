@@ -93,7 +93,7 @@ spec:
     - name: echo-message
       image: alpine:3
       command: [echo]
-      args: ["$(params.message"]
+      args: ["$(params.message)"]
 ```
 
 Apply the new task definition to the cluster:
