@@ -9,6 +9,7 @@ from unittest import TestCase
 from service.utils import status  # HTTP Status Codes
 from service.routes import app, reset_counters
 
+
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
@@ -35,7 +36,7 @@ class CounterTest(TestCase):
         pass
 
 ######################################################################
-#  T E S T   C A S E S 
+#  T E S T   C A S E S
 ######################################################################
 
     def test_index(self):
