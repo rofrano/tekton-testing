@@ -88,12 +88,18 @@ kubectl apply -f pipeline.yaml
 
 ### Run the pipeline
 
-Let's run the pipeline using the Tekton CLI to see our new lint task run:
+First create the persistent volume claim for the workspace:
+
+```bash
+kubectl apply -f pvc.yaml
+```
+
+Then run the pipeline using the Tekton CLI to see our new lint task run:
 
 ```bash
 tkn pipeline start cd-pipeline \
     -p repo-url="https://github.com/rofrano/tekton-testing.git" \
-    -w name=pipeline-workspace,volumeClaimTemplateFile=pvc.yaml \
+    -w name=pipeline-workspace,claimName=pipelinerun-pvc \
     --showlog
 ```
 
@@ -260,7 +266,7 @@ Let's run the pipeline using the Tekton CLI to see our new lint task run:
 ```bash
 tkn pipeline start cd-pipeline \
     -p repo-url="https://github.com/rofrano/tekton-testing.git" \
-    -w name=pipeline-workspace,volumeClaimTemplateFile=pvc.yaml \
+    -w name=pipeline-workspace,claimName=pipelinerun-pvc \
     --showlog
 ```
 
