@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: pipelinerun-pvc
 spec:
-  storageClassName: skills-network-learner
+  # storageClassName: skills-network-learner
   resources:
     requests:
       storage:  1Gi
