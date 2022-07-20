@@ -6,7 +6,7 @@ Test cases can be run with the following:
   coverage report -m
 """
 from unittest import TestCase
-from service.utils import status  # HTTP Status Codes
+from service.common import status  # HTTP Status Codes
 from service.routes import app, reset_counters
 
 
@@ -42,6 +42,11 @@ class CounterTest(TestCase):
     def test_index(self):
         """ It should call the index call """
         resp = self.app.get("/")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+    def test_health(self):
+        """ It should be healthy """
+        resp = self.app.get("/health")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
     def test_create_counters(self):
