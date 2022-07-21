@@ -1,11 +1,11 @@
 {
-	"name": "Python 3",
+	"name": "Tekton",
 	"dockerFile": "Dockerfile",
 	"context": "..",
-	"remoteUser": "devops",
+	"remoteUser": "vscode",
 	"workspaceFolder": "/app",
     "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=delegated",
-    "runArgs": ["-h","tekton"],
+    "runArgs": ["-h","tekton", "--name", "tekton-testing"],
     "remoteEnv": {
       "FLASK_ENV": "development"
     },

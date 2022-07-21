@@ -7,18 +7,8 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     apt-get clean -y
 
-# Install K3D, IBM Cloud CLI for Kubernetes
-RUN curl -s "https://raw.githubusercontent.com/rancher/k3d/main/install.sh" | bash && \
-    curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
-
-# Install Tekton CLI
-RUN apt update;sudo apt install -y gnupg && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3EFE0E0A2F2F60AA && \
-    echo "deb http://ppa.launchpad.net/tektoncd/cli/ubuntu eoan main"|tee /etc/apt/sources.list.d/tektoncd-ubuntu-cli.list && \
-    apt update && apt install -y tektoncd-cli
-
 # Create a user for development
-ARG USERNAME=devops
+ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
@@ -27,20 +17,23 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME -s /bin/bash \
     && usermod -aG sudo $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
+    && chmod 0440 /etc/sudoers.d/$USERNAME \
+    && chown -R $USERNAME:$USERNAME /home/$USERNAME
 
 # Set up the Python development environment
 WORKDIR /app
 RUN python -m pip install --upgrade pip && \
     pip install --upgrade wheel
 
+ENV PORT 8000
+EXPOSE $PORT
+
 # Enable color terminal for docker exec bash
 ENV TERM=xterm-256color
-
-EXPOSE 5000
 
 # Become a regular user for development
 USER $USERNAME
 
-# Install IBM Cloud Kubernetes plugin
-RUN ibmcloud plugin install container-service -r 'IBM Cloud'
+# Install user mode tools
+COPY .devcontainer/scripts/install-tools.sh /tmp/
+RUN cd /tmp; bash ./install-tools.sh
