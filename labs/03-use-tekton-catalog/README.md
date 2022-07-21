@@ -2,6 +2,16 @@
 
 The Tekton community provides a wide selection of Tasks that you can use in your pipelines so that you don't have to write all of them yourself. Many common tasks can be found at the [Tekton Hub](http://hub.tekton.dev). This lab will use one of them.
 
+## Learning Objectives
+
+After completing this lab, you will be able to:
+
+- Install the git-clone task from the Tekton CD Catalog
+- Understand the parameters required to use the git-clone task
+- Use the git-clone task in a Tekton pipeline to clone your git repository
+
+---
+
 ## Step 1
 
 ### Add the git-clone task

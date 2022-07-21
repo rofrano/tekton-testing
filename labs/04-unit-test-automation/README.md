@@ -2,6 +2,39 @@
 
 Welcome to Integrating Unit Test Automation. In this lab we will take the code that was cloned in the previous pipeline step and run linting and unit tests against it to make sure it is ready to be built and deployed.
 
+## Learning Objectives
+
+After completing this lab, you will be able to:
+
+- Install the flake8 task from the Tekton CD Catalog
+- Understand the parameters required to use the flake8 task
+- Use the flake8 task in a Tekton pipeline to lint your code
+
+---
+
+## Prerequisites
+
+If you did not compete the previous labs you will need to run the following commands to catchup and get yor environment ready for this lab.
+
+```bash
+tkn hub install task git-clone
+```
+
+Check that you have all of the previous tasks installed:
+
+```bash
+tkn task ls
+```
+
+You should see:
+
+```txt
+NAME               DESCRIPTION              AGE
+git-clone          These Tasks are Git...   2 minutes ago
+```
+
+You are now ready to continue with this lab.
+
 ---
 
 ## Step 1
