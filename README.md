@@ -1,57 +1,47 @@
-# Tekton Testing
+# Intro to CI/CD Practice Code
 
-This repo is for experimenting with Tekton pipelines
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python 3.9](https://img.shields.io/badge/Python-3.9-green.svg)](https://shields.io/)
 
-## Software Installs
+This repository contains the practice code for the labs in **IBM-CD0215EN-SkillsNetwork Introduction to CI/CD**
 
-Install Tekton in your Kubernetes cluster:
+## Contents
 
-```bash
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
-```
+- Lab 1: Build an empty Pipeline
+- Lab 2: Adding GitHub Triggers
+- Lab 3: Use Tekton CD Catalog
+- Lab 4: Integrate Unit Test Automation
+- Lab 5: Building an Image
+- Lab 6: Deploy to Kubernetes
 
-## Install the Tekton CLI
+## Development Environment
 
-Mac
+These labs are designed to be executed in the IBM Developer Skills Network Cloud IDE environment, however you can work on them locally using Docker and Visual Studio Code with the Remote Containers extension to provide a consistent repeatable disposable development environment for all of the labs in this course.
 
-```bash
-brew install tektoncd-cli
-```
+You will need the following software installed:
 
-Linux
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Visual Studio Code](https://code.visualstudio.com)
+- [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension from the Visual Studio Marketplace
 
-```bash
-sudo apt update;sudo apt install -y gnupg
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3EFE0E0A2F2F60AA
-echo "deb http://ppa.launchpad.net/tektoncd/cli/ubuntu eoan main"|sudo tee /etc/apt/sources.list.d/tektoncd-ubuntu-cli.list
-sudo apt update && sudo apt install -y tektoncd-cli
-```
+All of these can be installed manually by clicking on the links above or you can use a package manager like **Homebrew** on Mac of **Chocolatey** on Windows.
 
-## Tekton Hub
+### Using Remote Containers
 
-You can find tasks at [hub.tekton.dev](http://hub.tekton.dev)
-
-You can install tasks using the Tekton CLI (`tkn`)
+To bring up the development environment you should clone this repo, change into the repo directory, and then open Visual Studio Code using the `code .` command. VS Code will prompt you to reopen in a container and you should say **yes**. This will take a while as it builds the Docker image and creates a container from it to develop in.
 
 ```bash
-tkn hub install task git-clone
+git clone https://github.com/ibm-developer-skills-network/wtecc-CICD_PracticeCode.git
+cd wtecc-CICD_PracticeCode
+code .
 ```
 
-## Run a Pipeline
+Note that there is a period `.` after the `code` command. This tells Visual Studio Code to open the editor and load the current folder of files. When prompted to **Reopen in Container** select that option and it will build a development for you inside a Docker container.
 
-You can run a pipeline using the Tekton CLI:
+Once the environment is loaded you should be placed at a `bash` prompt in the `/app` folder inside of the development container. This folder is mounted to the current working directory of your repository on your computer. This means that any file you edit while inside of the `/app` folder in the container is actually being edited on your computer. You can then commit your changes to `git` from either inside or outside of the container.
 
-```bash
-tkn pipeline start --showlogs .tekton/pipeline.yaml
-```
+## Author
 
-### Optional
+John Rofrano, Senior Technical Staff Member, DevOps Champion, @ IBM Research
 
-If working in the terminal in becomes difficult because the command prompt is very long, you can shorten the prompt using the following command:
-
-```bash
-export PS1="[\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[01;34m\]\W\[\033[00m\]]\$ "
-```
+## <h3 align="center"> © IBM Corporation 2022. All rights reserved. <h3/>

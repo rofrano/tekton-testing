@@ -1,14 +1,14 @@
 # Building and Image
 
-Welcome to the hands-on lab for **Building an Image**. You are now at the build step, which is the next to last step in your CD pipeline. Before you can deploy your application, you need to build a Docker image. Luckily, there are several tasks in the Tekton catalog that can do that. You will use one named `buildah`.
+Welcome to the hands-on lab for **Building an Image**. You are now at the build step, which is the next to last step in your CD pipeline. Before you can deploy your application, you need to build a Docker image and push it to an image registry. Luckily, there is a ClusterTask from the Tekton catalog available on your cluster that can do that -- the `buildah` ClusterTask.
 
 ## Learning Objectives
 
 After completing this lab, you will be able to:
 
-- Install the buildah task from the Tekton CD Catalog
-- Describe the parameters required to use the buildah task
-- Use the buildah task in a Tekton pipeline to build an image and push it to an image registry
+- Determine which ClusterTasks are available on your cluster
+- Describe the parameters required to use the buildah ClusterTask
+- Use the buildah ClusterTask in a Tekton pipeline to build an image and push it to an image registry
 
 ---
 
@@ -153,13 +153,27 @@ kubectl apply -f pipeline.yaml
 
 ## Step 6: Run the pipeline
 
-First, make sure that the persistent volume claim for the workspace exists by applying it using `kubectl`:
+In this final step we will apply the pipeline to our cluster and run it.
+
+### Apply the pipeline
+
+Apply the same changes you just made to `pipeline.yaml` to your cluster:
+
+```bash
+kubectl apply -f pipeline.yaml
+```
+
+### Apply the PVC
+
+Next, make sure that the persistent volume claim for the workspace exists by applying it using `kubectl`:
 
 ```bash
 kubectl apply -f pvc.yaml
 ```
 
-When we start the pipeline, we now need to pass in the `build-image` parameter which is the name of the image to build.
+### Start the pipeline
+
+When you start the pipeline, you now need to pass in the `build-image` parameter, which is the name of the image to build.
 
 This will be different for every learner that uses this lab. Here is the format:
 
@@ -167,21 +181,24 @@ This will be different for every learner that uses this lab. Here is the format:
 image-registry.openshift-image-registry.svc:5000/$SN_ICR_NAMESPACE/tekton-lab:latest
 ```
 
-Notice the variable `$SN_ICR_NAMESPACE` in the image name. This is set automatically to point to your container namespace.
+Notice the variable `$SN_ICR_NAMESPACE` in the image name. This is automatically set to point to your container namespace.
 
-Then run the pipeline using the Tekton CLI to see our new build task run:
+Then, to see your new build task run, use the Tekton CLI to run the pipeline:
 
 ```bash
 tkn pipeline start cd-pipeline \
     -p repo-url="https://github.com/ibm-developer-skills-network/wtecc-CICD_PracticeCode.git" \
+    -p branch=main \
     -p build-image=image-registry.openshift-image-registry.svc:5000/$SN_ICR_NAMESPACE/tekton-lab:latest \
     -w name=pipeline-workspace,claimName=pipelinerun-pvc \
     --showlog
 ```
 
-You should see the pipeline run complete successfully.
+You should see that the pipeline run completes successfully.
 
-You can see the pipeline run status by listing the PipelineRuns with:
+### Getting status
+
+You can see the pipeline run status by listing the pipeline runs with:
 
 ```bash
 tkn pipelinerun ls
@@ -199,6 +216,7 @@ You can check the logs of the last run with:
 ```bash
 tkn pipelinerun logs --last
 ```
+
 ---
 
 ## Complete
