@@ -49,6 +49,11 @@ push: ## Push image to registry
 	docker tag hitcounter:1.0 localhost:32000/hitcounter:1.0
 	docker push localhost:32000/hitcounter:1.0
 
+tasks: ## Create Tekton Cluster Tasks
+	$(info Creating Tekton Cluster Tasks...)
+	wget -qO - https://raw.githubusercontent.com/tektoncd/catalog/main/task/openshift-client/0.2/openshift-client.yaml | sed 's/kind: Task/kind: ClusterTask/g' | kubectl create -f -
+	wget -qO - https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildah/0.4/buildah.yaml | sed 's/kind: Task/kind: ClusterTask/g' | kubectl create -f -
+
 # deploy: ## Deploy to Kubernetes
 # 	$(info Deploying to Kubernetes...)
 # 	kubectl apply -f deploy/redis.yaml
