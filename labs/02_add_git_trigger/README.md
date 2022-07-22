@@ -32,7 +32,7 @@ The first thing we need is an event listener that is listening for incoming even
 Create the following `eventlistener.yaml` file that created an EventListener named `cd-listener` that references a TriggerBinding named `cd-binding` and a TriggerTemplate named `cd-template`:
 
 ```yaml
-apiVersion: triggers.tekton.dev/v1alpha1
+apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener
 metadata:
   name: cd-listener
@@ -73,7 +73,7 @@ The next thing we need is a way to bind the incoming data from the event, to pas
 Create the following `triggerbinding.yaml` file that creates a TriggerBinding named `cd-binding` that takes the `body.repository.url` and `body.ref`, and binds them to the parameters `repository` and `branch` respectively.
 
 ```yaml
-apiVersion: triggers.tekton.dev/v1alpha1
+apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
 metadata:
   name: cd-binding
@@ -102,7 +102,7 @@ The TriggerTemplate takes the parameters passed in from the TriggerBinding and c
 Create the following `triggertemplate.yaml` file that creates a TriggerTemplate named `cd-template` that defines the parameters required, and created a PipelineRun that will run the `cd-pipeline` that we created in the previous lab.
 
 ```yaml
-apiVersion: triggers.tekton.dev/v1alpha1
+apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
   name: cd-template
