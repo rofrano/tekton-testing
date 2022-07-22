@@ -200,8 +200,52 @@ You can check the logs of the last run with:
 tkn pipelinerun logs --last
 ```
 
+If successful, the last lines you should see in the logs is:
+
+```
+[deploy : oc] deployment.apps/hitcounter created
+```
+
+If it says anything but _created_ something has gone wrong.
+
+---
+
+## Step 7: Check the deployment
+
+Let's see if the deployment is running. Use the `kubectl` command to check that your deployment is in a running state.
+
+```bash
+kubectl get all -l app=hitcounter
+```
+
+You should see:
+
+```
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/hitcounter-7c9f95784d-rk4tf   1/1     Running   0          2m46s
+
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/hitcounter   1/1     1            1           2m46s
+
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/hitcounter-7c9f95784d   1         1         1       2m46s
+```
+
+If you **pod** is running, your application has been successfully been deployed.
+
 ---
 
 ## Complete
 
-Congratulations! You have just added the ability to build a docker image and push it to teh registry in OpenShift.
+Congratulations! You have just added the ability to deploy a Docker image to an OpenShift / Kubernetes cluster.
+
+In this lab, you learned how to use the `openshift-client` ClusterTask from the Tekton catalog. You learned how to modify your pipeline to reference the task as a ClusterTask and configure its parameters. You also learned how to pass additional parameters to a pipeline to specify the application name, how to run the pipeline to deploy an image to OpenShift.
+
+## Next Steps
+
+Try to set up a pipeline to deploy an image with Tekton from one of your own code repositories.
+
+If you are interested in continuing to learn about Kubernetes and containers, you should get your own [free Kubernetes cluster](https://www.ibm.com/cloud/container-service/) and your own free [IBM Container Registry](https://www.ibm.com/cloud/container-registry).
+
+## Author
+[John J. Rofrano](https://www.coursera.org/instructor/johnrofrano)
