@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
-metadata:  
-  name: message-pipeline
+metadata:
+  name: hello-pipeline
 spec:
   params:
     - name: message
   tasks:
-    - name: talk
+    - name: hello
       taskRef:
         name: echo
       params:
